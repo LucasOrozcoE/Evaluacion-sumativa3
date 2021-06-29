@@ -1,0 +1,278 @@
+
+<nav
+  class="navbar navbar-expand-lg"
+  style="background-color: rgb(255, 144, 162)"
+>
+  <div class="container">
+    <img src="../../assets/img/kirby.png" width="60" />
+    <a class="navbar-brand" href="#" style="color: black">
+      <h5>Kirby Gaming</h5></a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="productos"><h5>Productos</h5></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-lg-0">
+        <img width="85" src="../../assets/img/kirbyDance.gif" />
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid mt-1 bg-dark text-center">
+  <div class="row">
+    <div class="col">
+      <span class="text-white">SOMOS LA MEJOR TIENDA DE JUEGOS RETRO</span>
+    </div>
+    <div class="col"><span class="text-white">WE ARE GAMER KIRBY</span></div>
+    <div class="col">
+      <span class="text-white"
+        >TUS JUEGOS DE LA NIÑEZ LOS TRAEMOS A TU ADULTEZ</span
+      >
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 mt-2">
+      <form class="d-flex">
+        <input
+          class="form-control me-2"
+          [formControl]="clave"
+          ng-model="searchText"
+          type="text"
+          placeholder="Palabra clave: genero, consola, nombre"
+          aria-label="Search"
+        />
+        <button (click)="busquedaClave()" class="btn btn-success" type="submit">
+          Buscar
+        </button>
+        <button
+          (click)="quitarBusqueda()"
+          class="btn btn-warning"
+          type="submit"
+        >
+          Quitar
+        </button>
+        <svg class="bi" width="32" height="32" fill="currentColor">
+          <use xlink:href="bootstrap-icons.svg#heart-fill" />
+        </svg>
+      </form>
+    </div>
+    <div class="col-md-2 mt-2" style="margin-left: 40%">
+      <button
+        data-bs-target="#exampleModal"
+        data-bs-toggle="modal"
+        class="btn btn-primary"
+      >
+        <i class="bi bi-cart"> Ver Carrito de compras</i>
+        <span *ngIf="productosCarrito.length > 0"
+          >({{ productosCarrito.length }})</span
+        >
+      </button>
+    </div>
+  </div>
+</div>
+<hr />
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <h4 class="text-center">Productos disponibles</h4>
+      <br />
+      <div class="row">
+        <div
+          class="col-md-4 mb-4"
+          *ngFor="
+            let items of productosActual;
+            let i = index;
+            filter: searchText
+          "
+        >
+          <img width="80%" height="80%" src="{{ items.img }}" /><br />
+          <span class="fw-bolder">{{ items.nombre }}</span
+          ><br />
+          <span>{{ items.precio | currency: "CLP" }}</span
+          ><br />
+          Agregar al carrito
+          <button (click)="agregarProducto(i)" class="btn btn-primary">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i> agregar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Carrito de compra -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="exampleModalLabel">Carrito de compra</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-image">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Producto</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Total</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of productosCarrito; let j = index">
+              <td class="w-25">
+                <img
+                  src="{{ p.img }}"
+                  class="img-fluid img-thumbnail"
+                  alt="Sheep"
+                />
+              </td>
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.precio }}</td>
+              <td style="width: 15%">
+                <input
+                  type="number"
+                  class="form-control"
+                  [formControl]="cantidad"
+                  id="input1"
+                  placeholder="{{ productosCantidad[j + 1].cant }}"
+                />
+              </td>
+              <td>{{ p.precio * productosCantidad[j + 1].cant }}</td>
+              <td>
+                <button
+                  (click)="eliminarProducto(p.codigo)"
+                  class="btn btn-danger btn-sm"
+                >
+                  <i class="fa fa-times"> eliminar</i>
+                </button>
+                &nbsp;
+                <button
+                  (click)="actualizarProducto(p.codigo)"
+                  href="#"
+                  class="btn btn-success btn-sm"
+                >
+                  <i class="fas fa-sync-alt"> modificar</i>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>Total:</th>
+              <td>{{ totalDinero | currency: "CLP" }}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <!-----------------ingreso de datos de tarjeta de credit-info --------------->
+        <div class="credit-info">
+          <div class="credit-info-content">
+            <table class="half-input-table">
+              <tr>
+                <td>Elija su tarjeta de pago:</td>
+                <td>
+                 <select>
+                  <option>Visa</option>
+                 <option>MasterCard</option>
+                 <option>American</option>
+                 </select>
+                </td>
+              </tr>
+            </table>
+            <img
+              src="../../assets/img/tarjetas.jpg"
+              height="80"
+              width="300"
+              class="credit-card-image"
+              id="credit-card-image"
+            />
+            Número tarjeta
+            <input class="input-field"minlength="8" maxlength="8" />
+            Nombre tarjeta
+            <input class="input-field" minlength="10" maxlength="20" />
+            <table class="half-input-table">
+              <tr>
+                <td>
+                  Expira
+                  <input class="input-field" type="date" value="2021-06-29" />
+                </td>
+                <td>
+                  CVC
+                  <input
+                    class="input-field"
+                    type="number"
+                    min="0"
+                    max="999"
+                    minlength="3"
+                  />
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+        <button
+          data-bs-dismiss="modal"
+          type="button"
+          routerLink="../pago"
+          class="btn btn-primary"
+        >
+          Pagar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+  <p class="mb-2">© 2021 Smart Components</p>
+  <audio
+    controls
+    src="../assets/audio/greens.mp3"
+    type="audio/mp3"
+    style="width: 93%; height: 70px"
+  >
+    Your browser does not support the <code>audio</code> element.
+  </audio>
+  <ul class="list-inline">
+    <li class="list-inline-item"><a href="#">Instagram</a></li>
+    <li class="list-inline-item"><a href="#">Facebook</a></li>
+    <li class="list-inline-item"><a href="#">Twitter</a></li>
+  </ul>
+</footer>

@@ -1,0 +1,18 @@
+<div class="container-fluid bg" >
+        <div class="col-md-8 col-sm-8 col-xs-8" id="sLogin">
+            <h4 class="text-center"> <img src="../../assets/img/kirby.png" style="width: 25%;"> <br>Bienvenido a kirby gaming!!</h4>
+            <h5 class="text-center">Inicie sesión para continuar</h5> 
+                <div class="form-group">
+                    <label for="exampleInputUser"><h5>Usuario</h5></label>
+                    <input type="text" class="form-control" [formControl]="user" placeholder="user">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword"><h5>Contraseña</h5></label>
+                    <input type="password" class="form-control" [formControl]="pwd" placeholder="user">
+                </div>
+                <br>
+                <button type="submit" (click)=validar() class="btn btn-dark">Iniciar sesión</button>
+                <br>
+                <span style="color:red">{{alertUser}}</span>
+        </div>
+    </div>

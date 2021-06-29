@@ -1,0 +1,16 @@
+
+button{
+    padding: 3px;
+    width: 10%;
+    
+}
+
+input {
+    border: 2px solid currentcolor;
+  }
+  input:invalid {
+    border: 2px dashed red;
+  }
+  input:invalid:focus {
+    background-image: linear-gradient(pink, lightgreen);
+  }
